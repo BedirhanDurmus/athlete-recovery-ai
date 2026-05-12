@@ -12,31 +12,15 @@
 
 <div class="splash">
 
-  <!-- Carousel: <img> ile mobilde object-fit kontrolü -->
   <div class="slides">
-    <div class="slide active">
-      <img src="{{ url_for('static', filename='images/splash-athletics.jpg') }}" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
-    </div>
-    <div class="slide">
-      <img src="{{ url_for('static', filename='images/splash-basketball.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
-    </div>
-    <div class="slide">
-      <img src="{{ url_for('static', filename='images/splash-boxing.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
-    </div>
-    <div class="slide">
-      <img src="{{ url_for('static', filename='images/splash-fitness.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
-    </div>
-    <div class="slide">
-      <img src="{{ url_for('static', filename='images/splash-soccer.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
-    </div>
+    <div class="slide active"><img src="{{ url_for('static', filename='images/splash-athletics.jpg') }}" alt=""></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/splash-basketball.jpg') }}" alt=""></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/splash-boxing.jpg') }}" alt=""></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/splash-fitness.jpg') }}" alt=""></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/splash-soccer.jpg') }}" alt=""></div>
   </div>
 
   <div class="overlay"></div>
-
-  <div class="particles">
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
 
   <div class="content">
 
@@ -45,28 +29,19 @@
         <circle cx="32" cy="32" r="30" stroke="url(#g1)" stroke-width="2.5"/>
         <path d="M16 44 L32 12 L48 44" stroke="url(#g1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M22 36 H42" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round"/>
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64">
-            <stop offset="0%" stop-color="#3b82f6"/>
-            <stop offset="100%" stop-color="#10b981"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="64" y2="64"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs>
       </svg>
       <h1 class="brand">ATHLETE RECOVERY <span class="ai-badge">AI</span></h1>
       <p class="tagline">AI destekli sporcu toparlanma analizi ve performans tahmini</p>
     </div>
 
-    <!-- Sade: sıralı satırlar + bar (kart yok) -->
-    <div class="load-panel">
-      <div class="load-lines" id="load-lines" aria-live="polite"></div>
-      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-wrap">
-        <div class="progress-fill" id="progress-fill"></div>
-      </div>
+    <div class="load-area">
+      <p class="status-line" id="status-line">Hazırlanıyor...</p>
+      <div class="bar-track"><div class="bar-fill" id="progress-fill"></div></div>
     </div>
 
     <button type="button" id="start-btn" class="start-btn" disabled>
-      <span class="btn-icon">▶</span>
-      <span class="btn-text">BAŞLA</span>
+      <span class="btn-icon">▶</span> BAŞLA
     </button>
 
     <div class="stats">
