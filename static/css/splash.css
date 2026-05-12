@@ -43,10 +43,11 @@ html, body {
   position: absolute;
   inset: 0;
   z-index: 2;
+  /* Hafif filtre: fotoğrafın kabaca %80'i görünsün diye alfa düşük tutuldu */
   background:
-    radial-gradient(circle at 20% 30%, rgba(59,130,246,.25), transparent 55%),
-    radial-gradient(circle at 80% 70%, rgba(16,185,129,.20), transparent 55%),
-    linear-gradient(180deg, rgba(10,14,26,.82) 0%, rgba(10,14,26,.92) 100%);
+    radial-gradient(circle at 20% 30%, rgba(59,130,246,.10), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(16,185,129,.08), transparent 55%),
+    linear-gradient(180deg, rgba(10,14,26,.18) 0%, rgba(10,14,26,.26) 100%);
 }
 
 .particles {
