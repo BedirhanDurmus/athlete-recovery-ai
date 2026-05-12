@@ -2,6 +2,7 @@
 
 html, body {
   height: 100%;
+  min-height: 100dvh;
   overflow: hidden;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: #0a0e1a;
@@ -11,11 +12,15 @@ html, body {
 .splash {
   position: relative;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
 }
 
 /* ── Rotating slides ─────────────────────────────────── */
@@ -23,12 +28,14 @@ html, body {
   position: absolute;
   inset: 0;
   z-index: 1;
+  min-height: 100dvh;
 }
 .slide {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-repeat: no-repeat;
+  background-position: center center;
   opacity: 0;
   transform: scale(1.08);
   transition: opacity 1.4s ease, transform 7s ease;
@@ -80,7 +87,7 @@ html, body {
   0%   { transform: translateY(0) scale(1);   opacity: 0; }
   10%  { opacity: 1; }
   90%  { opacity: 1; }
-  100% { transform: translateY(-105vh) scale(.3); opacity: 0; }
+  100% { transform: translateY(-105dvh) scale(.3); opacity: 0; }
 }
 
 /* ── Content ─────────────────────────────────────────── */
@@ -305,12 +312,52 @@ html, body {
   margin-top: 2px;
 }
 
-/* ── Mobile ──────────────────────────────────────────── */
+/* ── Mobile: foto kırpımı — dikeyde üst / merkez-üst odak (yüz & gövde) ── */
+@media (max-width: 900px) and (orientation: portrait) {
+  .slide {
+    /* cover + yukarı kaydırılmış odak: geniş yatay fotoğrafta insanlar ortada kalır */
+    background-position: center 20%;
+    transform: scale(1.04);
+  }
+  .slide.active {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 520px) and (orientation: portrait) {
+  .slide {
+    background-position: center 16%;
+    transform: scale(1.03);
+  }
+}
+
+@media (max-width: 400px) and (orientation: portrait) {
+  .slide {
+    background-position: center 10%;
+  }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+  .slide {
+    background-position: center center;
+    transform: scale(1.05);
+  }
+  .slide.active {
+    transform: scale(1);
+  }
+}
+
+/* ── Mobile typography / layout ──────────────────────── */
 @media (max-width: 560px) {
+  .content {
+    padding: 24px 16px max(28px, env(safe-area-inset-bottom, 28px));
+    max-width: 100%;
+  }
+  .logo-wrap { margin-bottom: 28px; }
   .brand { font-size: 1.55rem; letter-spacing: 1px; }
   .tagline { font-size: 0.85rem; }
   .logo-icon { width: 72px; height: 72px; }
   .progress-block { padding: 18px 18px; }
-  .start-btn { padding: 14px 32px; font-size: 0.95rem; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
+  .start-btn { padding: 14px 32px; font-size: 0.95rem; touch-action: manipulation; }
+  .stats { grid-template-columns: repeat(2, 1fr); margin-top: 24px; gap: 10px; }
 }
