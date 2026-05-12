@@ -1,12 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   const progressFill = document.getElementById("progress-fill");
-  const progressPercent = document.getElementById("progress-percent");
-  const statusText = document.getElementById("status-text");
-  const checklistItems = document.querySelectorAll("#checklist li");
+  const progressWrap = document.getElementById("progress-wrap");
+  const loadLines = document.getElementById("load-lines");
   const startBtn = document.getElementById("start-btn");
 
-  // ── Slide carousel ─────────────────────────────────
   let slideIdx = 0;
   setInterval(() => {
     slides[slideIdx].classList.remove("active");
@@ -14,27 +12,45 @@ document.addEventListener("DOMContentLoaded", () => {
     slides[slideIdx].classList.add("active");
   }, 3200);
 
-  // ── Loading sequence ───────────────────────────────
   const steps = [
-    { pct: 18, msg: "scikit-learn pipeline yükleniyor...",          stepIdx: 0 },
-    { pct: 38, msg: "GradientBoosting modeli hazırlanıyor...",     stepIdx: 1 },
-    { pct: 58, msg: "Özellik mühendisliği aktifleştiriliyor...",   stepIdx: 2 },
-    { pct: 82, msg: "Biyometri & antrenman verisi senkronize ediliyor...", stepIdx: 3 },
-    { pct: 100, msg: "Sistem çevrimiçi — başlamaya hazır!",        stepIdx: 4 },
+    { pct: 22, line: "scikit-learn pipeline yükleniyor", final: false },
+    { pct: 42, line: "GradientBoosting modeli hazırlanıyor", final: false },
+    { pct: 62, line: "Özellik mühendisliği aktifleştiriliyor", final: false },
+    { pct: 85, line: "Biyometri ve antrenman verisi senkronize ediliyor", final: false },
+    { pct: 100, line: "Sistem çevrimiçi — başlamaya hazır!", final: true },
   ];
 
   let currentStep = 0;
   let currentPct = 0;
   let targetPct = 0;
 
-  // Smooth percent counter
+  function setAriaProgress(v) {
+    if (progressWrap) {
+      progressWrap.setAttribute("aria-valuenow", String(Math.round(v)));
+    }
+  }
+
   function tickCounter() {
     if (currentPct < targetPct) {
       currentPct = Math.min(targetPct, currentPct + 1);
-      progressPercent.textContent = currentPct + "%";
       progressFill.style.width = currentPct + "%";
+      setAriaProgress(currentPct);
       requestAnimationFrame(tickCounter);
     }
+  }
+
+  function dimPreviousLines() {
+    loadLines.querySelectorAll(".load-line:not(.load-line--final)").forEach((el) => {
+      el.classList.add("load-line--muted");
+    });
+  }
+
+  function addLine(text, isFinal) {
+    dimPreviousLines();
+    const p = document.createElement("p");
+    p.className = "load-line" + (isFinal ? " load-line--final" : "");
+    p.textContent = text;
+    loadLines.appendChild(p);
   }
 
   function advanceStep() {
@@ -43,41 +59,28 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     const s = steps[currentStep];
-    statusText.textContent = s.msg;
+    addLine(s.line, Boolean(s.final));
     targetPct = s.pct;
     tickCounter();
 
-    // Mark previous as done, current as active
-    checklistItems.forEach((li, i) => {
-      li.classList.remove("active");
-      if (i < s.stepIdx) li.classList.add("done");
-      else if (i === s.stepIdx) li.classList.add("active");
-    });
-
     currentStep++;
-    const delay = currentStep === steps.length ? 900 : 1100 + Math.random() * 600;
+    const delay = currentStep === steps.length ? 900 : 950 + Math.random() * 450;
     setTimeout(advanceStep, delay);
   }
 
   function finishLoading() {
-    // mark all done
-    checklistItems.forEach((li) => {
-      li.classList.remove("active");
-      li.classList.add("done");
-    });
     startBtn.disabled = false;
     startBtn.classList.add("ready");
   }
 
-  // Kick off after a short delay
-  setTimeout(advanceStep, 600);
+  setTimeout(advanceStep, 500);
 
-  // ── Start button → go to main app ──────────────────
   startBtn.addEventListener("click", () => {
-    document.querySelector(".splash").style.transition = "opacity .6s ease";
-    document.querySelector(".splash").style.opacity = "0";
+    const root = document.querySelector(".splash");
+    root.style.transition = "opacity .55s ease";
+    root.style.opacity = "0";
     setTimeout(() => {
       window.location.href = "/app";
-    }, 600);
+    }, 550);
   });
 });

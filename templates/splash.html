@@ -12,28 +12,34 @@
 
 <div class="splash">
 
-  <!-- Carousel slides (rotating background) -->
+  <!-- Carousel: <img> ile mobilde object-fit kontrolü -->
   <div class="slides">
-    <div class="slide active" style="background-image:url('{{ url_for('static', filename='images/splash-athletics.jpg') }}')"></div>
-    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-basketball.jpg') }}')"></div>
-    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-boxing.jpg') }}')"></div>
-    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-fitness.jpg') }}')"></div>
-    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-soccer.jpg') }}')"></div>
+    <div class="slide active">
+      <img src="{{ url_for('static', filename='images/splash-athletics.jpg') }}" alt="" width="1920" height="1080" fetchpriority="high" decoding="async">
+    </div>
+    <div class="slide">
+      <img src="{{ url_for('static', filename='images/splash-basketball.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
+    </div>
+    <div class="slide">
+      <img src="{{ url_for('static', filename='images/splash-boxing.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
+    </div>
+    <div class="slide">
+      <img src="{{ url_for('static', filename='images/splash-fitness.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
+    </div>
+    <div class="slide">
+      <img src="{{ url_for('static', filename='images/splash-soccer.jpg') }}" alt="" width="1920" height="1080" loading="lazy" decoding="async">
+    </div>
   </div>
 
-  <!-- Dark overlay -->
   <div class="overlay"></div>
 
-  <!-- Floating data particles -->
   <div class="particles">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
-  <!-- Main content -->
   <div class="content">
 
-    <!-- Logo -->
     <div class="logo-wrap">
       <svg class="logo-icon" viewBox="0 0 64 64" fill="none">
         <circle cx="32" cy="32" r="30" stroke="url(#g1)" stroke-width="2.5"/>
@@ -50,31 +56,19 @@
       <p class="tagline">AI destekli sporcu toparlanma analizi ve performans tahmini</p>
     </div>
 
-    <!-- Progress block -->
-    <div class="progress-block">
-      <div class="progress-label">
-        <span id="status-text">Model yükleniyor...</span>
-        <span id="progress-percent">0%</span>
-      </div>
-      <div class="progress-bar">
+    <!-- Sade: sıralı satırlar + bar (kart yok) -->
+    <div class="load-panel">
+      <div class="load-lines" id="load-lines" aria-live="polite"></div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-wrap">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <ul class="checklist" id="checklist">
-        <li data-step="0"><span class="dot"></span>scikit-learn pipeline yükleniyor</li>
-        <li data-step="1"><span class="dot"></span>GradientBoosting modeli hazırlanıyor</li>
-        <li data-step="2"><span class="dot"></span>Özellik mühendisliği aktifleştiriliyor</li>
-        <li data-step="3"><span class="dot"></span>Biyometri & antrenman verisi senkronize</li>
-        <li data-step="4"><span class="dot"></span>Sistem çevrimiçi</li>
-      </ul>
     </div>
 
-    <!-- Start button (revealed when loading done) -->
-    <button id="start-btn" class="start-btn" disabled>
+    <button type="button" id="start-btn" class="start-btn" disabled>
       <span class="btn-icon">▶</span>
       <span class="btn-text">BAŞLA</span>
     </button>
 
-    <!-- Stats footer -->
     <div class="stats">
       <div class="stat"><div class="stat-num">300</div><div class="stat-label">Atlet</div></div>
       <div class="stat"><div class="stat-num">28</div><div class="stat-label">Gün</div></div>
