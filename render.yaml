@@ -2,6 +2,9 @@ services:
   - type: web
     name: athlete-recovery-ai
     runtime: python
+    repo: https://github.com/BedirhanDurmus/athlete-recovery-ai.git
+    branch: master
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
