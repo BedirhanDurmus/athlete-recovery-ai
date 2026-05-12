@@ -30,7 +30,14 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Tarayıcıda `http://localhost:5000` adresine gidin.
+Tarayıcıda `http://localhost:5000` adresine gidin (splash). Tahmin formu: `http://localhost:5000/app`.
+
+**Önemli:** Uygulama `athlete-recovery-ai` klasöründen çalıştırılmalı; aksi halde `models/` bulunamaz. Model `scikit-learn 1.8` + `NumPy 2.2` ile uyumludur; `requirements.txt` sürümlerini değiştirmeyin veya modeli yeniden eğitip kaydedin.
+
+## Sorun giderme
+
+- **`ValueError: MT19937 is not a known BitGenerator`:** Eski `numpy==1.26` + `scikit-learn==1.5` ile oluşur. `pip install -r requirements.txt` ile güncel pinleri kurun.
+- **Port 5000 meşgul:** `set PORT=5001` (Windows) veya `PORT=5001 python app.py` deneyin.
 
 ## Yapı
 

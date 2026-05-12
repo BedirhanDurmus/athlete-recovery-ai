@@ -1,6 +1,8 @@
+# Model was trained with scikit-learn 1.8.x + NumPy 2.x; older pins caused
+# joblib load failures (MT19937 BitGenerator) on Render and with numpy<2.
 flask==3.1.1
 gunicorn==23.0.0
 joblib==1.4.2
-numpy==1.26.4
+numpy==2.2.2
 pandas==2.2.3
-scikit-learn==1.5.2
+scikit-learn==1.8.0
