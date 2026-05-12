@@ -4,7 +4,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response
 
 ROOT = Path(__file__).resolve().parent
 MODEL_PATH = ROOT / "models" / "athlete_recovery_model.joblib"
@@ -109,7 +109,10 @@ def _recommendations(raw: dict, score: float):
 
 @app.route("/")
 def splash():
-    return render_template("splash.html")
+    resp = make_response(render_template("splash.html"))
+    # Splash sık değişiyor; tarayıcı/CDN eski HTML+CSS tutmasın
+    resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    return resp
 
 
 @app.route("/app")
