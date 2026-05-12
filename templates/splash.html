@@ -5,50 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Athlete Recovery AI — Hazırlanıyor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/splash.css') }}">
 </head>
 <body>
 
 <div class="splash">
 
-  <div class="slides" aria-hidden="true">
-    <div class="slide active">
-      <img class="slide-img" src="{{ url_for('static', filename='images/splash-athletics.jpg') }}" alt="" decoding="async" fetchpriority="high">
-    </div>
-    <div class="slide">
-      <img class="slide-img" src="{{ url_for('static', filename='images/splash-basketball.jpg') }}" alt="" decoding="async">
-    </div>
-    <div class="slide">
-      <img class="slide-img" src="{{ url_for('static', filename='images/splash-boxing.jpg') }}" alt="" decoding="async">
-    </div>
-    <div class="slide">
-      <img class="slide-img" src="{{ url_for('static', filename='images/splash-fitness.jpg') }}" alt="" decoding="async">
-    </div>
-    <div class="slide">
-      <img class="slide-img" src="{{ url_for('static', filename='images/splash-soccer.jpg') }}" alt="" decoding="async">
-    </div>
+  <!-- Carousel slides (rotating background) -->
+  <div class="slides">
+    <div class="slide active" style="background-image:url('{{ url_for('static', filename='images/splash-athletics.jpg') }}')"></div>
+    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-basketball.jpg') }}')"></div>
+    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-boxing.jpg') }}')"></div>
+    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-fitness.jpg') }}')"></div>
+    <div class="slide" style="background-image:url('{{ url_for('static', filename='images/splash-soccer.jpg') }}')"></div>
   </div>
 
+  <!-- Dark overlay -->
   <div class="overlay"></div>
 
+  <!-- Floating data particles -->
   <div class="particles">
     <span></span><span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span><span></span>
   </div>
 
-  <div class="hud">
-    <p class="status-line" id="status-line" aria-live="polite"></p>
-    <div class="progress-row">
-      <div class="progress-track">
+  <!-- Main content -->
+  <div class="content">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <svg class="logo-icon" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" stroke="url(#g1)" stroke-width="2.5"/>
+        <path d="M16 44 L32 12 L48 44" stroke="url(#g1)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 36 H42" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#10b981"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <h1 class="brand">ATHLETE RECOVERY <span class="ai-badge">AI</span></h1>
+      <p class="tagline">AI destekli sporcu toparlanma analizi ve performans tahmini</p>
+    </div>
+
+    <!-- Progress block -->
+    <div class="progress-block">
+      <div class="progress-label">
+        <span id="status-text">Model yükleniyor...</span>
+        <span id="progress-percent">0%</span>
+      </div>
+      <div class="progress-bar">
         <div class="progress-fill" id="progress-fill"></div>
       </div>
-      <span class="progress-percent" id="progress-percent">0%</span>
+      <ul class="checklist" id="checklist">
+        <li data-step="0"><span class="dot"></span>scikit-learn pipeline yükleniyor</li>
+        <li data-step="1"><span class="dot"></span>GradientBoosting modeli hazırlanıyor</li>
+        <li data-step="2"><span class="dot"></span>Özellik mühendisliği aktifleştiriliyor</li>
+        <li data-step="3"><span class="dot"></span>Biyometri & antrenman verisi senkronize</li>
+        <li data-step="4"><span class="dot"></span>Sistem çevrimiçi</li>
+      </ul>
     </div>
-    <button type="button" id="start-btn" class="start-btn" disabled>
+
+    <!-- Start button (revealed when loading done) -->
+    <button id="start-btn" class="start-btn" disabled>
       <span class="btn-icon">▶</span>
       <span class="btn-text">BAŞLA</span>
     </button>
+
+    <!-- Stats footer -->
+    <div class="stats">
+      <div class="stat"><div class="stat-num">300</div><div class="stat-label">Atlet</div></div>
+      <div class="stat"><div class="stat-num">28</div><div class="stat-label">Gün</div></div>
+      <div class="stat"><div class="stat-num">21</div><div class="stat-label">Özellik</div></div>
+      <div class="stat"><div class="stat-num">0-100</div><div class="stat-label">Skor</div></div>
+    </div>
+
   </div>
 
 </div>
