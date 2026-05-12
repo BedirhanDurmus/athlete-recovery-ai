@@ -1,83 +1,119 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const slidesRoot = document.getElementById("slides-root");
   const slides = document.querySelectorAll(".slide");
   const progressFill = document.getElementById("progress-fill");
   const progressPercent = document.getElementById("progress-percent");
   const statusText = document.getElementById("status-text");
-  const checklistItems = document.querySelectorAll("#checklist li");
+  const typeCursor = document.getElementById("type-cursor");
   const startBtn = document.getElementById("start-btn");
 
-  // ── Slide carousel ─────────────────────────────────
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  /** Tüm splash görsellerini tarayıcı önbelleğine çeker. */
+  function preloadImages(urls) {
+    return Promise.all(
+      urls.map(
+        (src) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
+            img.src = src;
+          })
+      )
+    );
+  }
+
+  function collectSlideUrls() {
+    return Array.from(slides).map((el) => el.getAttribute("src")).filter(Boolean);
+  }
+
   let slideIdx = 0;
-  setInterval(() => {
-    slides[slideIdx].classList.remove("active");
-    slideIdx = (slideIdx + 1) % slides.length;
-    slides[slideIdx].classList.add("active");
-  }, 3200);
+  let carouselTimer = null;
 
-  // ── Loading sequence ───────────────────────────────
-  const steps = [
-    { pct: 18, msg: "scikit-learn pipeline yükleniyor...",          stepIdx: 0 },
-    { pct: 38, msg: "GradientBoosting modeli hazırlanıyor...",     stepIdx: 1 },
-    { pct: 58, msg: "Özellik mühendisliği aktifleştiriliyor...",   stepIdx: 2 },
-    { pct: 82, msg: "Biyometri & antrenman verisi senkronize ediliyor...", stepIdx: 3 },
-    { pct: 100, msg: "Sistem çevrimiçi — başlamaya hazır!",        stepIdx: 4 },
-  ];
+  function startCarousel() {
+    if (carouselTimer) return;
+    carouselTimer = setInterval(() => {
+      slides[slideIdx].classList.remove("active");
+      slideIdx = (slideIdx + 1) % slides.length;
+      slides[slideIdx].classList.add("active");
+    }, 3400);
+  }
 
-  let currentStep = 0;
   let currentPct = 0;
   let targetPct = 0;
+  let rafId = null;
 
-  // Smooth percent counter
   function tickCounter() {
+    rafId = null;
     if (currentPct < targetPct) {
-      currentPct = Math.min(targetPct, currentPct + 1);
+      currentPct = Math.min(targetPct, currentPct + 2);
       progressPercent.textContent = currentPct + "%";
       progressFill.style.width = currentPct + "%";
-      requestAnimationFrame(tickCounter);
+      rafId = requestAnimationFrame(tickCounter);
+    } else if (currentPct > targetPct) {
+      currentPct = targetPct;
+      progressPercent.textContent = currentPct + "%";
+      progressFill.style.width = currentPct + "%";
     }
   }
 
-  function advanceStep() {
-    if (currentStep >= steps.length) {
-      finishLoading();
-      return;
-    }
-    const s = steps[currentStep];
-    statusText.textContent = s.msg;
-    targetPct = s.pct;
-    tickCounter();
-
-    // Mark previous as done, current as active
-    checklistItems.forEach((li, i) => {
-      li.classList.remove("active");
-      if (i < s.stepIdx) li.classList.add("done");
-      else if (i === s.stepIdx) li.classList.add("active");
-    });
-
-    currentStep++;
-    const delay = currentStep === steps.length ? 900 : 1100 + Math.random() * 600;
-    setTimeout(advanceStep, delay);
+  function setTargetPct(n) {
+    targetPct = Math.min(100, Math.max(0, n));
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(tickCounter);
   }
 
-  function finishLoading() {
-    // mark all done
-    checklistItems.forEach((li) => {
-      li.classList.remove("active");
-      li.classList.add("done");
-    });
+  async function typeLine(text, msPerChar = 16) {
+    typeCursor.classList.remove("is-hidden");
+    statusText.textContent = "";
+    for (let i = 0; i < text.length; i++) {
+      statusText.textContent += text[i];
+      await sleep(msPerChar);
+    }
+  }
+
+  async function runBootSequence() {
+    const lines = [
+      "scikit-learn pipeline yükleniyor…",
+      "GradientBoosting modeli hazırlanıyor…",
+      "Özellik mühendisliği aktifleştiriliyor…",
+      "Biyometri ve antrenman verisi senkronize ediliyor…",
+    ];
+    const pctsAfterLine = [22, 45, 68, 88];
+
+    for (let i = 0; i < lines.length; i++) {
+      await typeLine(lines[i], 14);
+      setTargetPct(pctsAfterLine[i]);
+      await sleep(280);
+    }
+
+    setTargetPct(100);
+    await sleep(550);
+
+    await typeLine("Çevrimiçi — hazır.", 12);
+    typeCursor.classList.add("is-hidden");
+
     startBtn.disabled = false;
     startBtn.classList.add("ready");
   }
 
-  // Kick off after a short delay
-  setTimeout(advanceStep, 600);
-
-  // ── Start button → go to main app ──────────────────
   startBtn.addEventListener("click", () => {
-    document.querySelector(".splash").style.transition = "opacity .6s ease";
+    document.querySelector(".splash").style.transition = "opacity .55s ease";
     document.querySelector(".splash").style.opacity = "0";
     setTimeout(() => {
       window.location.href = "/app";
-    }, 600);
+    }, 550);
   });
+
+  (async () => {
+    const urls = collectSlideUrls();
+    await preloadImages(urls);
+    slidesRoot.classList.remove("is-pending");
+    slidesRoot.classList.add("is-ready");
+    startCarousel();
+
+    await sleep(120);
+    await runBootSequence();
+  })();
 });
